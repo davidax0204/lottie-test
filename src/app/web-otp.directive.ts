@@ -13,7 +13,7 @@ export class WebOtpDirective implements AfterViewInit {
         const input = this.el.nativeElement;
         const ac = new AbortController();
         const form = input.closest('form');
-        
+
         if (form) {
           form.addEventListener('submit', () => {
             ac.abort();
