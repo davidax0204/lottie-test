@@ -1,11 +1,10 @@
-import { AfterViewInit, Directive, ElementRef } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
   selector: '[appWebOtp]'
 })
-export class WebOtpDirective implements AfterViewInit {
-  constructor(private el: ElementRef, private ngControl: NgControl) {}
+export class WebOtpDirective {
+  constructor(private el: ElementRef) {}
 
   ngAfterViewInit(): void {
     if ('OTPCredential' in window) {
@@ -34,7 +33,7 @@ export class WebOtpDirective implements AfterViewInit {
     navigator.credentials.get(otpRequest)
       .then((otp: any) => {
         if (otp && otp.code) {
-          this.ngControl.control?.setValue(otp.code);
+          inputElement.value = otp.code; // Set value directly to the input field
         }
       });
   }
