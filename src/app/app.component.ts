@@ -8,6 +8,7 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 export class AppComponent {
   constructor() {}
   input:string=''
+  test= false
   private abortController = new AbortController();
 
   ngAfterViewInit(): void {
