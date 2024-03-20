@@ -10,31 +10,32 @@ export class WebOtpDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     if ('OTPCredential' in window) {
       window.addEventListener('DOMContentLoaded', () => {
-        const input = this.el.nativeElement;
-        const ac = new AbortController();
-        const form = input.closest('form');
-
-        if (form) {
-          form.addEventListener('submit', () => {
-            ac.abort();
-          });
-        }
-
-        const reqObj = {
-          otp: { transport:['sms'] },
-          signal: ac.signal
-        };
-
-        navigator.credentials.get(reqObj).then((otp: any) => {
-          if (otp && otp.code) {
-            this.ngControl.control?.setValue(otp.code);
-          }
-        }).catch(err => {
-          console.log(err);
-        });
+        this.handleWebOTP();
       });
-    } else {
-      console.log('Web OTP API not supported, Please enter manually.');
     }
+  }
+
+  private handleWebOTP(): void {
+    const inputElement = this.el.nativeElement;
+    const abortController = new AbortController();
+    const formElement = inputElement.closest('form');
+    
+    if (formElement) {
+      formElement.addEventListener('submit', () => {
+        abortController.abort();
+      });
+    }
+
+    const otpRequest = {
+      otp: { transport:['sms'] },
+      signal: abortController.signal
+    };
+
+    navigator.credentials.get(otpRequest)
+      .then((otp: any) => {
+        if (otp && otp.code) {
+          this.ngControl.control?.setValue(otp.code);
+        }
+      });
   }
 }
