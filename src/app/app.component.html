@@ -1,1 +1,13 @@
-<span>v1111111111111: {{input}}</span>
+<span>V1</span>
+
+<form method="post">
+  Enter OTP here:
+  <input
+    type="text"
+    autocomplete="one-time-code"
+    inputmode="numeric"
+    name="one-time-code"
+    [(ngModel)]="myOTP"
+  />
+  <input type="submit" value="Submit" (click)="submitOTP()"/>
+</form>

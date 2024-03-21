@@ -7,8 +7,8 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 })
 export class AppComponent {
   constructor() {}
-  input:string=''
-  test= false
+  myOTP: string = '';
+  
   private abortController = new AbortController();
 
   ngAfterViewInit(): void {
@@ -28,8 +28,14 @@ export class AppComponent {
     navigator.credentials.get(otpRequest)
       .then((otp: any) => {
         if (otp && otp.code) {
-          this.input = otp.code
+          this.myOTP = otp.code; // Set the received OTP to the variable bound to the input field
         }
       });
+  }
+
+  submitOTP(): void {
+    // Display OTP in an alert
+    alert('OTP Submitted: ' + this.myOTP);
+    // Add further logic as needed
   }
 }
