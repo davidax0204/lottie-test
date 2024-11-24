@@ -1,12 +1,31 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
 export class AppComponent implements AfterViewInit {
-  myOTP: string = '';
+  form!: FormGroup;
+  myOTP!: AbstractControl | null;
   private abortController: AbortController = new AbortController();
+
+  /**
+   *
+   */
+  constructor(private formBuilder: FormBuilder,) {
+    
+  }
+
+  ngOnInit(){
+    this.form = this.formBuilder.group(
+      {
+        ['myOTP']: ['', [Validators.required]],
+      }
+    );
+  
+    this.myOTP = this.form.get('myOTP') as FormControl;
+  }
 
   ngAfterViewInit(): void {
     this.triggerOtpListener()
@@ -29,7 +48,8 @@ export class AppComponent implements AfterViewInit {
     navigator.credentials.get(otpRequest as any)
       .then((otp: any) => {
         if (otp && otp.code) {
-          this.myOTP = otp.code;
+          // this.myOTP = otp.code;
+          this.myOTP?.patchValue(otp.code)
           console.log('OTP received:', otp.code);
         }
       })

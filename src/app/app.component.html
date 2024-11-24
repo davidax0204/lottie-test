@@ -1,13 +1,20 @@
-<span>V1 Check</span>
+<span>V1 Check2222</span>
 
 <form method="post">
   <label>Enter OTP here:</label>
-  <input
+  <!-- <input
     type="text"
     autocomplete="one-time-code"
     inputmode="numeric"
     name="one-time-code"
     [(ngModel)]="myOTP"
-  />
+  /> -->
+  
+  <mat-form-field>
+    <label>Enter OTP here:</label>
+    <input autocomplete="one-time-code" name="one-time-code" type="text" inputmode="numeric" matInput [formControlName]="'myOTP'">
+</mat-form-field>
+
+
   <button type="submit" (click)="submitOTP()">Submit</button>
 </form>
