@@ -9,7 +9,10 @@ export class AppComponent implements AfterViewInit {
   private abortController: AbortController = new AbortController();
 
   ngAfterViewInit(): void {
-    // Check if the OTPCredential API is supported
+    this.triggerOtpListener()
+  }
+
+  triggerOtpListener(){
     if ('OTPCredential' in window) {
       this.listenForOTP();
     } else {
@@ -26,13 +29,10 @@ export class AppComponent implements AfterViewInit {
     navigator.credentials.get(otpRequest as any)
       .then((otp: any) => {
         if (otp && otp.code) {
-          this.myOTP = otp.code; // Automatically fill the OTP
+          this.myOTP = otp.code;
           console.log('OTP received:', otp.code);
         }
       })
-      .catch((err) => {
-        alert('Error: ' + err);
-      });
   }
 
   submitOTP(): void {
