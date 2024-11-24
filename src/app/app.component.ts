@@ -1,41 +1,47 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Component, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements AfterViewInit {
   myOTP: string = '';
-  
-  private abortController = new AbortController();
+  private abortController: AbortController = new AbortController();
 
   ngAfterViewInit(): void {
+    // Check if the OTPCredential API is supported
     if ('OTPCredential' in window) {
-      window.addEventListener('DOMContentLoaded', () => {
-        this.handleWebOTP();
-      });
+      this.listenForOTP();
+    } else {
+      console.warn('Web OTP API is not supported in this browser.');
     }
   }
 
-  private handleWebOTP(): void {
+  private listenForOTP(): void {
     const otpRequest = {
-      otp: { transport:['sms'] },
-      signal: this.abortController.signal
+      otp: { transport: ['sms'] },
+      signal: this.abortController.signal,
     };
-
-    navigator.credentials.get(otpRequest)
+  
+    navigator.credentials.get(otpRequest as any)
       .then((otp: any) => {
         if (otp && otp.code) {
-          this.myOTP = otp.code; // Set the received OTP to the variable bound to the input field
+          this.myOTP = otp.code; // Automatically fill the OTP
+          console.log('OTP received:', otp.code);
         }
+      })
+      .catch((err) => {
+        alert('Error: ' + err);
       });
   }
 
   submitOTP(): void {
-    // Display OTP in an alert
+    // Add additional logic for OTP submission
     alert('OTP Submitted: ' + this.myOTP);
-    // Add further logic as needed
+  }
+
+  ngOnDestroy(): void {
+    // Abort the controller when the component is destroyed to clean up resources
+    this.abortController.abort();
   }
 }
