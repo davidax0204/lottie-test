@@ -10,6 +10,8 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.triggerOtpListener()
+    console.log('a');
+    
   }
 
   triggerOtpListener(){
