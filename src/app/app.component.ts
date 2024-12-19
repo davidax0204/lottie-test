@@ -10,30 +10,22 @@ export class AppComponent implements AfterViewInit {
   myOTP!: AbstractControl | null;
   private abortController: AbortController = new AbortController();
 
-  /**
-   *
-   */
-  constructor(private formBuilder: FormBuilder,) {
-    
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
-  ngOnInit(){
-    this.form = this.formBuilder.group(
-      {
-        ['myOTP']: ['', [Validators.required]],
-      }
-    );
-  
-    this.myOTP = this.form.get('myOTP') as FormControl;
+  ngOnInit() {
+    this.form = this.formBuilder.group({
+      myOTP: ['', [Validators.required]],
+    });
+
+    this.myOTP = this.form.get('myOTP');
   }
 
   ngAfterViewInit(): void {
-    this.triggerOtpListener()
-    console.log('a');
-    
+    this.triggerOtpListener();
+    console.log('Component initialized');
   }
 
-  triggerOtpListener(){
+  triggerOtpListener() {
     if ('OTPCredential' in window) {
       this.listenForOTP();
     } else {
@@ -42,30 +34,30 @@ export class AppComponent implements AfterViewInit {
   }
 
   private listenForOTP(): void {
-    this.abortController = new AbortController(); 
+    this.abortController = new AbortController();
 
     const otpRequest = {
       otp: { transport: ['sms'] },
       signal: this.abortController.signal,
     };
-  
-    navigator.credentials.get(otpRequest as any)
-      .then((otp: any) => {
-        if (otp && otp.code) {
-          // this.myOTP = otp.code;
-          this.myOTP?.patchValue(otp.code)
-          console.log('OTP received:', otp.code);
-        }
-      })
+
+    navigator.credentials.get(otpRequest as any).then((otp: any) => {
+      if (otp && otp.code) {
+        this.myOTP?.setValue(otp.code);
+        console.log('OTP received:', otp.code);
+      }
+    });
   }
 
   submitOTP(): void {
-    // Add additional logic for OTP submission
-    alert('OTP Submitted: ' + this.myOTP);
+    if (this.form.valid) {
+      alert('OTP Submitted: ' + this.form.value.myOTP);
+    } else {
+      alert('Please enter a valid OTP.');
+    }
   }
 
   ngOnDestroy(): void {
-    // Abort the controller when the component is destroyed to clean up resources
     this.abortController.abort();
   }
 }

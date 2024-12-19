@@ -6,10 +6,6 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WebOtpDirective } from './web-otp.directive';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,8 +15,6 @@ import { MatInputModule } from '@angular/material/input';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     ReactiveFormsModule
   ],
   providers: [],
