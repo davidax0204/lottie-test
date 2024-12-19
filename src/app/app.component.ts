@@ -44,7 +44,7 @@ export class AppComponent implements AfterViewInit {
     navigator.credentials.get(otpRequest as any).then((otp: any) => {
       if (otp && otp.code) {
         this.myOTP?.setValue(otp.code);
-        console.log('OTP received:', otp.code);
+        this.triggerOtpListener();  // Restart the listener
       }
     });
   }
