@@ -42,6 +42,8 @@ export class AppComponent implements AfterViewInit {
   }
 
   private listenForOTP(): void {
+    this.abortController = new AbortController(); 
+
     const otpRequest = {
       otp: { transport: ['sms'] },
       signal: this.abortController.signal,
