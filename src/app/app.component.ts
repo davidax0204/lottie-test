@@ -26,6 +26,8 @@ export class AppComponent implements AfterViewInit {
   }
 
   triggerOtpListener() {
+    this.abortController = new AbortController();
+
     if ('OTPCredential' in window) {
       this.listenForOTP();
     } else {
@@ -34,7 +36,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   private listenForOTP(): void {
-    this.abortController = new AbortController();
+    // this.abortController = new AbortController();
 
     const otpRequest = {
       otp: { transport: ['sms'] },
