@@ -26,8 +26,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   triggerOtpListener() {
-    this.abortController = new AbortController();
-
     if ('OTPCredential' in window) {
       this.listenForOTP();
     } else {
@@ -36,21 +34,24 @@ export class AppComponent implements AfterViewInit {
   }
 
   private listenForOTP(): void {
-    // this.abortController = new AbortController();
-
+    this.abortController = new AbortController();
+  
     const otpRequest = {
       otp: { transport: ['sms'] },
       signal: this.abortController.signal,
     };
-
-    navigator.credentials.get(otpRequest as any).then((otp: any) => {
-      if (otp && otp.code) {
-        this.myOTP?.setValue(otp.code);
-        this.triggerOtpListener();  // Restart the listener
-      }
-    });
+  
+    navigator.credentials.get(otpRequest as any)
+      .then((otp: any) => {
+        if (otp && otp.code) {
+          this.myOTP?.setValue(otp.code);
+        }
+      })
+      .finally(() => {
+        this.triggerOtpListener();
+      });
   }
-
+  
   submitOTP(): void {
     if (this.form.valid) {
       alert('OTP Submitted: ' + this.form.value.myOTP);
