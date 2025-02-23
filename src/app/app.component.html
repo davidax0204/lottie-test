@@ -1,12 +1,13 @@
-<span>V1 no mat comment </span>
+<span>V2</span>
 
 <form [formGroup]="form" (ngSubmit)="submitOTP()">
-  <label for="otp-input">Enter OTP here:</label>
+  <label>Enter OTP here:</label>
   <input
-    id="otp-input"
     type="text"
     autocomplete="one-time-code"
     inputmode="numeric"
+    maxlength="10" 
+    matInput
     formControlName="myOTP"
   />
 
